@@ -125,6 +125,9 @@ create table PERSONA (
    FECHA_REG            DATE                 null,
    TIPO                 char(1)              not null,
    ID_LOC               INTEGER              null,
+   ORIGEN               CHAR(1)              not null,
+   SINC                 CHAR(1)              not null,
+   ULT_ACT              TIMESTAMP            not null,
    constraint PK_PERSONA primary key (ID_PERSONA)
 );
 
@@ -140,9 +143,6 @@ create table PERS_FISICA (
    NOMBRE2              TEXT                 null,
    FECHA_NAC            DATE                 null,
    SEXO                 char(1)              null,
-   ORIGEN               CHAR(1)              not null,
-   SINC                 CHAR(1)              not null,
-   ULT_ACT              TIMESTAMP            not null,
    constraint PK_PERS_FISICA primary key (DOCUMENTO),
    constraint CK_CLIENTE check (SEXO in ('M', 'F') AND SINC in ('S', 'N'))
 );
