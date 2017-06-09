@@ -65,8 +65,8 @@ create table LOCALIDAD (
 /*==============================================================*/
 create table LOTE (
    ID_LOTE              SERIAL not null,
-   ID_PRODUCTO          INTEGER              null,
-   VENC                 DATE                 not null,
+   ID_PRODUCTO          INTEGER              not null,
+   VENC                 DATE                 null,
    NRO_DEP              INTEGER              null,
    ID_UTIL              INTEGER              null,
    STOCK                INTEGER              not null,
