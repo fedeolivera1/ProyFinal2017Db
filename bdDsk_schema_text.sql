@@ -24,7 +24,7 @@ drop table TIPO_PROD;
 
 drop table TRANSACCION;
 
-drop table TRAN_ANULADA;
+drop table TRAN_ESTADO;
 
 drop table TRAN_LINEA;
 
@@ -65,6 +65,7 @@ create table LOCALIDAD (
 /*==============================================================*/
 create table LOTE (
    ID_LOTE              SERIAL not null,
+   NRO_TRANSAC          INTEGER              not null,
    ID_PRODUCTO          INTEGER              not null,
    VENC                 DATE                 null,
    NRO_DEP              INTEGER              null,
@@ -203,20 +204,23 @@ create table TRANSACCION (
    ID_PERSONA           BIGINT               null,
    OPERACION            CHAR(1)              not null,
    FECHA_HORA           TIMESTAMP            null,
-   SUB_TOTAL            NUMERIC(7,2)         not null,
-   IVA                  NUMERIC(7,2)         not null,
-   TOTAL                NUMERIC(7,2)         not null,
+   SUB_TOTAL            NUMERIC(12,2)        not null,
+   IVA                  NUMERIC(12,2)        not null,
+   TOTAL                NUMERIC(12,2)        not null,
+   ESTADO_ACT           CHAR(1)              null,
    constraint PK_TRANSACCION primary key (NRO_TRANSAC),
    constraint CKT_TRANSACCION check (OPERACION in ('V', 'C'))
 );
 
 /*==============================================================*/
-/* Table: TRAN_ANULADA                                          */
+/* Table: TRAN_ESTADO                                           */
 /*==============================================================*/
-create table TRAN_ANULADA (
+create table TRAN_ESTADO (
    NRO_TRANSAC          INTEGER              not null,
+   ESTADO               CHAR(1)              not null,
    FECHA_HORA           TIMESTAMP            not null,
-   constraint PK_TRAN_ANULADA primary key (NRO_TRANSAC)
+   constraint PK_TRAN_ESTADO primary key (NRO_TRANSAC, ESTADO),
+   constraint CKT_TRAN_ESTADO check (ESTADO in ('P', 'C', 'A'))
 );
 
 /*==============================================================*/
@@ -226,7 +230,7 @@ create table TRAN_LINEA (
    NRO_TRANSAC          INTEGER              not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
-   PRECIO_UNIT          NUMERIC(7,2)         not null,
+   PRECIO_UNIT          NUMERIC(12,2)        not null,
    constraint PK_TRAN_LINEA primary key (NRO_TRANSAC, ID_PRODUCTO)
 );
 
@@ -246,18 +250,13 @@ create table USR_DSK (
 create table UTILIDAD (
    ID_UTIL              SERIAL not null,
    DESCRIPCION          TEXT                 not null,
-   PORC                 DECIMAL(4,2)         not null,
+   PORC                 DECIMAL(5,2)         not null,
    constraint PK_UTILIDAD primary key (ID_UTIL)
 );
 
 alter table LOCALIDAD
    add constraint FK_LOCALIDA_REFERENCE_DEPARTAM foreign key (ID_DEP)
       references DEPARTAMENTO (ID_DEP)
-      on delete restrict on update restrict;
-
-alter table LOTE
-   add constraint FK_LOTE_REFERENCE_PRODUCTO foreign key (ID_PRODUCTO)
-      references PRODUCTO (ID_PRODUCTO)
       on delete restrict on update restrict;
 
 alter table LOTE
@@ -268,6 +267,11 @@ alter table LOTE
 alter table LOTE
    add constraint FK_LOTE_REFERENCE_UTILIDAD foreign key (ID_UTIL)
       references UTILIDAD (ID_UTIL)
+      on delete restrict on update restrict;
+
+alter table LOTE
+   add constraint FK_LOTE_REFERENCE_TRAN_LIN foreign key (NRO_TRANSAC, ID_PRODUCTO)
+      references TRAN_LINEA (NRO_TRANSAC, ID_PRODUCTO)
       on delete restrict on update restrict;
 
 alter table PEDIDO
@@ -325,8 +329,8 @@ alter table TRANSACCION
       references PERSONA (ID_PERSONA)
       on delete restrict on update restrict;
 
-alter table TRAN_ANULADA
-   add constraint FK_TRAN_ANU_REFERENCE_TRANSACC foreign key (NRO_TRANSAC)
+alter table TRAN_ESTADO
+   add constraint FK_TRAN_EST_REFERENCE_TRANSACC foreign key (NRO_TRANSAC)
       references TRANSACCION (NRO_TRANSAC)
       on delete restrict on update restrict;
 
