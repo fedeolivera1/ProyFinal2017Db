@@ -79,8 +79,7 @@ create table LOTE (
 /*==============================================================*/
 create table PEDIDO (
    ID_PERSONA           BIGINT               not null,
-   FECHA_ING            DATE                 not null,
-   HORA_ING             TIME                 not null,
+   FECHA_HORA           TIMESTAMP            not null,
    ESTADO               CHAR                 not null,
    FECHA_PROG           DATE                 null,
    HORA_PROG            TIME                 null,
@@ -90,7 +89,7 @@ create table PEDIDO (
    NRO_TRANSAC          INTEGER              null,
    SINC                 CHAR(1)              null,
    ULT_ACT              TIMESTAMP            null,
-   constraint PK_PEDIDO primary key (ID_PERSONA, FECHA_ING, HORA_ING),
+   constraint PK_PEDIDO primary key (ID_PERSONA, FECHA_HORA),
    constraint CKT_PEDIDO check (SINC in ('S', 'N'))
 );
 
@@ -99,13 +98,12 @@ create table PEDIDO (
 /*==============================================================*/
 create table PEDIDO_LINEA (
    ID_PERSONA           BIGINT               not null,
-   FECHA_ING            DATE                 not null,
-   HORA_ING             TIME                 not null,
+   FECHA_HORA           TIMESTAMP            not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
-   constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_ING, HORA_ING, ID_PRODUCTO),
+   constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_HORA, ID_PRODUCTO),
    constraint CKT_PEDIDO_LINEA check (SINC in ('S', 'N'))
 );
 
@@ -290,8 +288,8 @@ alter table PEDIDO
       on delete restrict on update restrict;
 
 alter table PEDIDO_LINEA
-   add constraint FK_PEDIDO_L_REFERENCE_PEDIDO foreign key (ID_PERSONA, FECHA_ING, HORA_ING)
-      references PEDIDO (ID_PERSONA, FECHA_ING, HORA_ING)
+   add constraint FK_PEDIDO_L_REFERENCE_PEDIDO foreign key (ID_PERSONA, FECHA_HORA)
+      references PEDIDO (ID_PERSONA, FECHA_HORA)
       on delete restrict on update restrict;
 
 alter table PEDIDO_LINEA
