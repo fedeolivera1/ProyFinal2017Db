@@ -1,0 +1,5 @@
+﻿INSERT INTO UNIDAD (nombre) VALUES ('Unidad');
+INSERT INTO UNIDAD (nombre) VALUES ('Kg');
+INSERT INTO UNIDAD (nombre) VALUES ('Gr');
+INSERT INTO UNIDAD (nombre) VALUES ('L');
+INSERT INTO UNIDAD (nombre) VALUES ('Ml');

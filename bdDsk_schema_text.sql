@@ -28,6 +28,8 @@ drop table TRAN_ESTADO;
 
 drop table TRAN_LINEA;
 
+drop table UNIDAD;
+
 drop table USR_DSK;
 
 drop table UTILIDAD;
@@ -84,6 +86,8 @@ create table PEDIDO (
    FECHA_PROG           DATE                 null,
    HORA_PROG            TIME                 null,
    ORIGEN               CHAR(1)              not null,
+   SUB_TOTAL            NUMERIC(12,2)        not null,
+   IVA                  NUMERIC(12,2)        not null,
    TOTAL                NUMERIC(12,2)        not null,
    NOM_USU              TEXT                 not null,
    NRO_TRANSAC          INTEGER              null,
@@ -101,6 +105,7 @@ create table PEDIDO_LINEA (
    FECHA_HORA           TIMESTAMP            not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
+   PRECIO_UNIT          NUMERIC(12,2)        null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
    constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_HORA, ID_PRODUCTO),
@@ -164,11 +169,14 @@ create table PERS_JURIDICA (
 /*==============================================================*/
 create table PRODUCTO (
    ID_PRODUCTO          SERIAL not null,
-   ID_TIPO_PROD         INTEGER              null,
+   ID_TIPO_PROD         INTEGER              not null,
    CODIGO               TEXT                 not null,
    NOMBRE               TEXT                 not null,
    DESCRIPCION          TEXT                 null,
    STOCK_MIN            NUMERIC(7,2)         not null,
+   APL_IVA              CHAR(1)              not null,
+   ID_UNIDAD            INTEGER              not null,
+   CANT_UNIDAD          INTEGER              not null,
    PRECIO               NUMERIC(7,2)         not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -230,6 +238,15 @@ create table TRAN_LINEA (
    CANTIDAD             INTEGER              not null,
    PRECIO_UNIT          NUMERIC(12,2)        not null,
    constraint PK_TRAN_LINEA primary key (NRO_TRANSAC, ID_PRODUCTO)
+);
+
+/*==============================================================*/
+/* Table: UNIDAD                                                */
+/*==============================================================*/
+create table UNIDAD (
+   ID_UNIDAD            SERIAL not null,
+   NOMBRE               TEXT                 not null,
+   constraint PK_UNIDAD primary key (ID_UNIDAD)
 );
 
 /*==============================================================*/
@@ -315,6 +332,11 @@ alter table PERS_FISICA
 alter table PERS_JURIDICA
    add constraint FK_PERS_JUR_REFERENCE_PERSONA foreign key (RUT)
       references PERSONA (ID_PERSONA)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO
+   add constraint FK_PRODUCTO_REFERENCE_UNIDAD foreign key (ID_UNIDAD)
+      references UNIDAD (ID_UNIDAD)
       on delete restrict on update restrict;
 
 alter table PRODUCTO
