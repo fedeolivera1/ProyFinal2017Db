@@ -105,6 +105,7 @@ create table PEDIDO_LINEA (
    FECHA_HORA           TIMESTAMP            not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
+   IVA                  DECIMAL(12,2)        null,
    PRECIO_UNIT          NUMERIC(12,2)        null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -236,6 +237,7 @@ create table TRAN_LINEA (
    NRO_TRANSAC          INTEGER              not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
+   IVA                  NUMERIC(12,2)        not null,
    PRECIO_UNIT          NUMERIC(12,2)        not null,
    constraint PK_TRAN_LINEA primary key (NRO_TRANSAC, ID_PRODUCTO)
 );
