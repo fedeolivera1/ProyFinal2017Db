@@ -321,7 +321,7 @@ alter table PERSONA
 alter table PERS_FISICA
    add constraint FK_PERS_FIS_REFERENCE_PERSONA foreign key (DOCUMENTO)
       references PERSONA (ID_PERSONA)
-      on delete restrict on update restrict;
+      on delete restrict on update cascade;
 
 alter table PERS_FISICA
    add constraint FK_PERS_FIS_REFERENCE_TIPO_DOC foreign key (ID_TIPO_DOC)
@@ -331,7 +331,7 @@ alter table PERS_FISICA
 alter table PERS_JURIDICA
    add constraint FK_PERS_JUR_REFERENCE_PERSONA foreign key (RUT)
       references PERSONA (ID_PERSONA)
-      on delete restrict on update restrict;
+      on delete restrict on update cascade;
 
 alter table PRODUCTO
    add constraint FK_PRODUCTO_REFERENCE_UNIDAD foreign key (ID_UNIDAD)
