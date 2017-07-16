@@ -28,6 +28,8 @@ drop table TRAN_ESTADO;
 
 drop table TRAN_LINEA;
 
+drop table TRAN_VTA_LOTE;
+
 drop table UNIDAD;
 
 drop table USR_DSK;
@@ -174,7 +176,7 @@ create table PRODUCTO (
    STOCK_MIN            NUMERIC(7,2)         not null,
    APL_IVA              CHAR(1)              not null,
    ID_UNIDAD            INTEGER              not null,
-   CANT_UNIDAD          INTEGER              not null,
+   CANT_UNIDAD          NUMERIC(7,2)         not null,
    PRECIO               NUMERIC(7,2)         not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -237,6 +239,17 @@ create table TRAN_LINEA (
    IVA                  NUMERIC(12,2)        not null,
    PRECIO_UNIT          NUMERIC(12,2)        not null,
    constraint PK_TRAN_LINEA primary key (NRO_TRANSAC, ID_PRODUCTO)
+);
+
+/*==============================================================*/
+/* Table: TRAN_VTA_LOTE                                         */
+/*==============================================================*/
+create table TRAN_VTA_LOTE (
+   NRO_TRANSAC          INTEGER              not null,
+   ID_PRODUCTO          INTEGER              not null,
+   ID_LOTE              INTEGER              not null,
+   CANTIDAD             INTEGER              not null,
+   constraint PK_TRAN_VTA_LOTE primary key (NRO_TRANSAC, ID_PRODUCTO, ID_LOTE)
 );
 
 /*==============================================================*/
@@ -361,4 +374,14 @@ alter table TRAN_LINEA
 alter table TRAN_LINEA
    add constraint FK_TRAN_LIN_REFERENCE_PRODUCTO foreign key (ID_PRODUCTO)
       references PRODUCTO (ID_PRODUCTO)
+      on delete restrict on update restrict;
+
+alter table TRAN_VTA_LOTE
+   add constraint FK_TRAN_VTA_REFERENCE_TRAN_LIN foreign key (NRO_TRANSAC, ID_PRODUCTO)
+      references TRAN_LINEA (NRO_TRANSAC, ID_PRODUCTO)
+      on delete restrict on update restrict;
+
+alter table TRAN_VTA_LOTE
+   add constraint FK_TRAN_VTA_REFERENCE_LOTE foreign key (ID_LOTE)
+      references LOTE (ID_LOTE)
       on delete restrict on update restrict;
