@@ -26,7 +26,7 @@ drop table USR_WEB;
 /* Table: DEPARTAMENTO                                          */
 /*==============================================================*/
 create table DEPARTAMENTO (
-   ID_DEP               INTEGER              not null,
+   ID_DEP               SERIAL               not null,
    NOMBRE               TEXT                 not null,
    constraint PK_DEPARTAMENTO primary key (ID_DEP)
 );
@@ -35,7 +35,7 @@ create table DEPARTAMENTO (
 /* Table: LOCALIDAD                                             */
 /*==============================================================*/
 create table LOCALIDAD (
-   ID_LOC               INTEGER              not null,
+   ID_LOC               SERIAL               not null,
    NOMBRE               TEXT                 not null,
    ID_DEP               INTEGER              null,
    constraint PK_LOCALIDAD primary key (ID_LOC)
@@ -70,8 +70,7 @@ create table PEDIDO_LINEA (
    CANTIDAD             INTEGER              not null,
    IVA                  NUMERIC(12,2)        null,
    PRECIO_UNIT          NUMERIC(12,2)        null,
-   constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_HORA, ID_PRODUCTO),
-   constraint CKT_PEDIDO_LINEA check (SINC in ('S', 'N'))
+   constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_HORA, ID_PRODUCTO)
 );
 
 /*==============================================================*/
@@ -91,10 +90,12 @@ create table PERSONA (
    FECHA_REG            DATE                 null,
    TIPO                 char(1)              null,
    ID_LOC               INTEGER              null,
+   NOM_USU              TEXT                 null,
    ORIGEN               CHAR(1)              not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
-   constraint PK_PERSONA primary key (ID_PERSONA)
+   constraint PK_PERSONA primary key (ID_PERSONA),
+   constraint CKT_PERSONA check (SINC in ('S', 'N'))
 );
 
 /*==============================================================*/
@@ -109,9 +110,8 @@ create table PERS_FISICA (
    NOMBRE2              TEXT                 null,
    FECHA_NAC            DATE                 null,
    SEXO                 char(1)              null,
-   NOM_USU              TEXT                 null,
    constraint PK_PERS_FISICA primary key (DOCUMENTO),
-   constraint CKT_PERS_FISICA check (SINC in ('S', 'N') AND SEXO in ('M', 'F'))
+   constraint CKT_PERS_FISICA check (SEXO in ('M', 'F'))
 );
 
 /*==============================================================*/
@@ -131,14 +131,14 @@ create table PERS_JURIDICA (
 /* Table: PRODUCTO                                              */
 /*==============================================================*/
 create table PRODUCTO (
-   ID_PRODUCTO          SERIAL not null,
-   ID_TIPO_PROD         INTEGER              not null,
+   ID_PRODUCTO          INTEGER              not null,
    CODIGO               TEXT                 not null,
    NOMBRE               TEXT                 not null,
    DESCRIPCION          TEXT                 null,
    STOCK_MIN            NUMERIC(7,2)         not null,
    APL_IVA              CHAR(1)              not null,
    ID_UNIDAD            INTEGER              not null,
+   ID_TIPO_PROD         INTEGER              null,
    CANT_UNIDAD          INTEGER              not null,
    PRECIO               NUMERIC(7,2)         not null,
    SINC                 CHAR(1)              not null,
@@ -169,7 +169,7 @@ create table TIPO_PROD (
 /* Table: UNIDAD                                                */
 /*==============================================================*/
 create table UNIDAD (
-   ID_UNIDAD            SERIAL not null,
+   ID_UNIDAD            INTEGER              not null,
    NOMBRE               TEXT                 not null,
    constraint PK_UNIDAD primary key (ID_UNIDAD)
 );
@@ -204,13 +204,13 @@ alter table PEDIDO_LINEA
       on delete restrict on update restrict;
 
 alter table PERSONA
-   add constraint FK_PERSONA_REFERENCE_LOCALIDA foreign key (ID_LOC)
-      references LOCALIDAD (ID_LOC)
+   add constraint FK_PERSONA_REFERENCE_USR_WEB foreign key (NOM_USU)
+      references USR_WEB (NOM_USU)
       on delete restrict on update restrict;
 
-alter table PERS_FISICA
-   add constraint FK_PERS_FIS_REFERENCE_USR_WEB foreign key (NOM_USU)
-      references USR_WEB (NOM_USU)
+alter table PERSONA
+   add constraint FK_PERSONA_REFERENCE_LOCALIDA foreign key (ID_LOC)
+      references LOCALIDAD (ID_LOC)
       on delete restrict on update restrict;
 
 alter table PERS_FISICA
