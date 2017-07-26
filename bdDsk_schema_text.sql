@@ -132,7 +132,8 @@ create table PERSONA (
    ORIGEN               CHAR(1)              not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
-   constraint PK_PERSONA primary key (ID_PERSONA)
+   constraint PK_PERSONA primary key (ID_PERSONA),
+   constraint CKT_PERSONA check (SINC in ('S', 'N'))
 );
 
 /*==============================================================*/
@@ -148,7 +149,7 @@ create table PERS_FISICA (
    FECHA_NAC            DATE                 null,
    SEXO                 char(1)              null,
    constraint PK_PERS_FISICA primary key (DOCUMENTO),
-   constraint CK_CLIENTE check (SEXO in ('M', 'F') AND SINC in ('S', 'N'))
+   constraint CKT_PERS_FISICA check (SEXO in ('M', 'F'))
 );
 
 /*==============================================================*/
@@ -180,8 +181,9 @@ create table PRODUCTO (
    PRECIO               NUMERIC(7,2)         not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
+   ACTIVO               NUMERIC(1)           not null,
    constraint PK_PRODUCTO primary key (ID_PRODUCTO),
-   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'X'))
+   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'X') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/

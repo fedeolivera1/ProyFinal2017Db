@@ -143,8 +143,9 @@ create table PRODUCTO (
    PRECIO               NUMERIC(7,2)         not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
+   ACTIVO               NUMERIC(1)           not null,
    constraint PK_PRODUCTO primary key (ID_PRODUCTO),
-   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'X'))
+   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'X') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/
