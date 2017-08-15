@@ -52,7 +52,7 @@ create table PEDIDO (
    HORA_PROG            TIME                 null,
    ORIGEN               CHAR(1)              not null,
    SUB_TOTAL            NUMERIC(12,2)        not null,
-   IVA                  DECIMAL(12,2)        null,
+   IVA                  DECIMAL(12,2)        not null,
    TOTAL                NUMERIC(12,2)        not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -81,7 +81,7 @@ create table PERSONA (
    DIRECCION            TEXT                 not null,
    PUERTA               TEXT                 null,
    SOLAR                TEXT                 null,
-   MANZANA              INTEGER              null,
+   MANZANA              TEXT                 null,
    KM                   NUMERIC(7,2)         null,
    COMPLEMENTO          TEXT                 null,
    TELEFONO             TEXT                 null,
@@ -90,7 +90,6 @@ create table PERSONA (
    FECHA_REG            DATE                 null,
    TIPO                 char(1)              null,
    ID_LOC               INTEGER              null,
-   NOM_USU              TEXT                 null,
    ORIGEN               CHAR(1)              not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -163,7 +162,10 @@ create table TIPO_DOC (
 create table TIPO_PROD (
    ID_TIPO_PROD         INTEGER              not null,
    DESCRIPCION          TEXT                 not null,
-   constraint PK_TIPO_PROD primary key (ID_TIPO_PROD)
+   SINC                 CHAR(1)              not null,
+   ACTIVO               NUMERIC(1)           not null,
+   constraint PK_TIPO_PROD primary key (ID_TIPO_PROD),
+   constraint CKT_TIPO_PROD check (SINC in ('S', 'N') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/
@@ -172,7 +174,10 @@ create table TIPO_PROD (
 create table UNIDAD (
    ID_UNIDAD            INTEGER              not null,
    NOMBRE               TEXT                 not null,
-   constraint PK_UNIDAD primary key (ID_UNIDAD)
+   SINC                 CHAR(1)              not null,
+   ACTIVO               NUMERIC(1)           not null,
+   constraint PK_UNIDAD primary key (ID_UNIDAD),
+   constraint CKT_UNIDAD check (SINC in ('S', 'N') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/
@@ -181,6 +186,7 @@ create table UNIDAD (
 create table USR_WEB (
    NOM_USU              TEXT                 not null,
    PASSWD               TEXT                 not null,
+   ID_PERSONA           BIGINT               not null,
    constraint PK_USR_WEB primary key (NOM_USU)
 );
 
@@ -202,11 +208,6 @@ alter table PEDIDO_LINEA
 alter table PEDIDO_LINEA
    add constraint FK_PEDIDO_L_REFERENCE_PRODUCTO foreign key (ID_PRODUCTO)
       references PRODUCTO (ID_PRODUCTO)
-      on delete restrict on update restrict;
-
-alter table PERSONA
-   add constraint FK_PERSONA_REFERENCE_USR_WEB foreign key (NOM_USU)
-      references USR_WEB (NOM_USU)
       on delete restrict on update restrict;
 
 alter table PERSONA
@@ -237,4 +238,9 @@ alter table PRODUCTO
 alter table PRODUCTO
    add constraint FK_PRODUCTO_REFERENCE_TIPO_PRO foreign key (ID_TIPO_PROD)
       references TIPO_PROD (ID_TIPO_PROD)
+      on delete restrict on update restrict;
+
+alter table USR_WEB
+   add constraint FK_USR_WEB_REFERENCE_PERSONA foreign key (ID_PERSONA)
+      references PERSONA (ID_PERSONA)
       on delete restrict on update restrict;
