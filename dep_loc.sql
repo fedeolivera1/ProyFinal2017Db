@@ -99,7 +99,7 @@ insert into localidad (nombre, id_dep) select 'TOLEDO', d.id_dep from departamen
 insert into localidad (nombre, id_dep) select 'BAL.ARGENTINO', d.id_dep from departamento d where d.nombre = 'CANELONES';
 insert into localidad (nombre, id_dep) select 'C. DE LA COSTA', d.id_dep from departamento d where d.nombre = 'CANELONES';
 insert into localidad (nombre, id_dep) select 'RODO', d.id_dep from departamento d where d.nombre = 'CANELONES';
-insert into localidad (nombre, id_dep) select 'Sin Localidad', d.id_dep from departamento d where d.nombre = 'FLORIDA';
+insert into localidad (nombre, id_dep) select 'Sin Localidad', d.id_dep from departamento d where d.nombre = 'CANELONES';
 
 -- MALDONADO
 insert into localidad (nombre, id_dep) select 'MALDONADO', d.id_dep from departamento d where d.nombre = 'MALDONADO';
