@@ -91,10 +91,10 @@ create table PEDIDO (
    SUB_TOTAL            NUMERIC(12,2)        not null,
    IVA                  NUMERIC(12,2)        not null,
    TOTAL                NUMERIC(12,2)        not null,
-   NOM_USU              TEXT                 not null,
+   NOM_USU              TEXT                 null,
    NRO_TRANSAC          INTEGER              null,
-   SINC                 CHAR(1)              null,
-   ULT_ACT              TIMESTAMP            null,
+   SINC                 CHAR(1)              not null,
+   ULT_ACT              TIMESTAMP            not null,
    constraint PK_PEDIDO primary key (ID_PERSONA, FECHA_HORA),
    constraint CKT_PEDIDO check (SINC in ('S', 'N'))
 );
@@ -201,7 +201,10 @@ create table TIPO_DOC (
 create table TIPO_PROD (
    ID_TIPO_PROD         SERIAL not null,
    DESCRIPCION          TEXT                 not null,
-   constraint PK_TIPO_PROD primary key (ID_TIPO_PROD)
+   SINC                 CHAR(1)              not null,
+   ACTIVO               NUMERIC(1)           not null,
+   constraint PK_TIPO_PROD primary key (ID_TIPO_PROD),
+   constraint CKT_TIPO_PROD check (SINC in ('S', 'N') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/
@@ -260,7 +263,10 @@ create table TRAN_VTA_LOTE (
 create table UNIDAD (
    ID_UNIDAD            SERIAL not null,
    NOMBRE               TEXT                 not null,
-   constraint PK_UNIDAD primary key (ID_UNIDAD)
+   SINC                 CHAR(1)              not null,
+   ACTIVO               NUMERIC(1)           not null,
+   constraint PK_UNIDAD primary key (ID_UNIDAD),
+   constraint CKT_UNIDAD check (SINC in ('S', 'N') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/
