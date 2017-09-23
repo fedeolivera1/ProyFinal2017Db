@@ -51,8 +51,6 @@ create table PEDIDO (
    FECHA_PROG           DATE                 null,
    HORA_PROG            TIME                 null,
    ORIGEN               CHAR(1)              not null,
-   SUB_TOTAL            NUMERIC(12,2)        not null,
-   IVA                  DECIMAL(12,2)        not null,
    TOTAL                NUMERIC(12,2)        not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -68,7 +66,6 @@ create table PEDIDO_LINEA (
    FECHA_HORA           TIMESTAMP            not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
-   IVA                  NUMERIC(12,2)        null,
    PRECIO_UNIT          NUMERIC(12,2)        null,
    constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_HORA, ID_PRODUCTO)
 );
@@ -137,13 +134,13 @@ create table PRODUCTO (
    APL_IVA              CHAR(1)              not null,
    ID_UNIDAD            INTEGER              not null,
    ID_TIPO_PROD         INTEGER              null,
-   CANT_UNIDAD          INTEGER              not null,
+   CANT_UNIDAD          NUMERIC(7,2)         not null,
    PRECIO_VTA           NUMERIC(7,2)         not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
    ACTIVO               NUMERIC(1)           not null,
    constraint PK_PRODUCTO primary key (ID_PRODUCTO),
-   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'X') AND ACTIVO in (0,1))
+   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'E') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/

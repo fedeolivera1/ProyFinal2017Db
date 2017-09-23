@@ -75,6 +75,7 @@ create table LOTE (
    NRO_DEP              INTEGER              null,
    ID_UTIL              INTEGER              null,
    STOCK                INTEGER              not null,
+   STOCK_INI            INTEGER              not null,
    constraint PK_LOTE primary key (ID_LOTE)
 );
 
@@ -183,7 +184,7 @@ create table PRODUCTO (
    ULT_ACT              TIMESTAMP            not null,
    ACTIVO               NUMERIC(1)           not null,
    constraint PK_PRODUCTO primary key (ID_PRODUCTO),
-   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'X') AND ACTIVO in (0,1))
+   constraint CKT_PRODUCTO check (SINC in ('S', 'N') AND APL_IVA in ('B', 'M', 'E') AND ACTIVO in (0,1))
 );
 
 /*==============================================================*/
