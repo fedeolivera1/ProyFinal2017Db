@@ -66,7 +66,7 @@ create table PEDIDO_LINEA (
    FECHA_HORA           TIMESTAMP            not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
-   PRECIO_UNIT          NUMERIC(12,2)        null,
+   PRECIO_UNIT          NUMERIC(12,2)        not null,
    constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_HORA, ID_PRODUCTO)
 );
 
@@ -85,8 +85,8 @@ create table PERSONA (
    CELULAR              TEXT                 null,
    EMAIL                TEXT                 null,
    FECHA_REG            DATE                 null,
-   TIPO                 char(1)              null,
-   ID_LOC               INTEGER              null,
+   TIPO                 char(1)              not null,
+   ID_LOC               INTEGER              not null,
    ORIGEN               CHAR(1)              not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -100,12 +100,12 @@ create table PERSONA (
 create table PERS_FISICA (
    DOCUMENTO            BIGINT               not null,
    ID_TIPO_DOC          INTEGER              not null,
-   APELLIDO1            TEXT                 null,
+   APELLIDO1            TEXT                 not null,
    APELLIDO2            TEXT                 null,
-   NOMBRE1              TEXT                 null,
+   NOMBRE1              TEXT                 not null,
    NOMBRE2              TEXT                 null,
-   FECHA_NAC            DATE                 null,
-   SEXO                 char(1)              null,
+   FECHA_NAC            DATE                 not null,
+   SEXO                 char(1)              not null,
    constraint PK_PERS_FISICA primary key (DOCUMENTO),
    constraint CKT_PERS_FISICA check (SEXO in ('M', 'F'))
 );
@@ -133,7 +133,7 @@ create table PRODUCTO (
    DESCRIPCION          TEXT                 null,
    APL_IVA              CHAR(1)              not null,
    ID_UNIDAD            INTEGER              not null,
-   ID_TIPO_PROD         INTEGER              null,
+   ID_TIPO_PROD         INTEGER              not null,
    CANT_UNIDAD          NUMERIC(7,2)         not null,
    PRECIO_VTA           NUMERIC(7,2)         not null,
    SINC                 CHAR(1)              not null,
@@ -148,7 +148,7 @@ create table PRODUCTO (
 /*==============================================================*/
 create table TIPO_DOC (
    ID_TIPO_DOC          INTEGER              not null,
-   NOMBRE               TEXT                 null,
+   NOMBRE               TEXT                 not null,
    constraint PK_TIPO_DOC primary key (ID_TIPO_DOC)
 );
 

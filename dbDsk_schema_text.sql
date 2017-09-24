@@ -60,7 +60,7 @@ create table DEPOSITO (
 create table LOCALIDAD (
    ID_LOC               SERIAL not null,
    NOMBRE               TEXT                 not null,
-   ID_DEP               INTEGER              null,
+   ID_DEP               INTEGER              not null,
    constraint PK_LOCALIDAD primary key (ID_LOC)
 );
 
@@ -108,8 +108,8 @@ create table PEDIDO_LINEA (
    FECHA_HORA           TIMESTAMP            not null,
    ID_PRODUCTO          INTEGER              not null,
    CANTIDAD             INTEGER              not null,
-   IVA                  DECIMAL(12,2)        null,
-   PRECIO_UNIT          NUMERIC(12,2)        null,
+   IVA                  DECIMAL(12,2)        not null,
+   PRECIO_UNIT          NUMERIC(12,2)        not null,
    constraint PK_PEDIDO_LINEA primary key (ID_PERSONA, FECHA_HORA, ID_PRODUCTO)
 );
 
@@ -129,7 +129,7 @@ create table PERSONA (
    EMAIL                TEXT                 null,
    FECHA_REG            DATE                 null,
    TIPO                 char(1)              not null,
-   ID_LOC               INTEGER              null,
+   ID_LOC               INTEGER              not null,
    ORIGEN               CHAR(1)              not null,
    SINC                 CHAR(1)              not null,
    ULT_ACT              TIMESTAMP            not null,
@@ -143,12 +143,12 @@ create table PERSONA (
 create table PERS_FISICA (
    DOCUMENTO            BIGINT               not null,
    ID_TIPO_DOC          INTEGER              not null,
-   APELLIDO1            TEXT                 null,
+   APELLIDO1            TEXT                 not null,
    APELLIDO2            TEXT                 null,
-   NOMBRE1              TEXT                 null,
+   NOMBRE1              TEXT                 not null,
    NOMBRE2              TEXT                 null,
-   FECHA_NAC            DATE                 null,
-   SEXO                 char(1)              null,
+   FECHA_NAC            DATE                 not null,
+   SEXO                 char(1)              not null,
    constraint PK_PERS_FISICA primary key (DOCUMENTO),
    constraint CKT_PERS_FISICA check (SEXO in ('M', 'F'))
 );
@@ -192,7 +192,7 @@ create table PRODUCTO (
 /*==============================================================*/
 create table TIPO_DOC (
    ID_TIPO_DOC          SERIAL not null,
-   NOMBRE               TEXT                 null,
+   NOMBRE               TEXT                 not null,
    constraint PK_TIPO_DOC primary key (ID_TIPO_DOC)
 );
 
@@ -213,13 +213,13 @@ create table TIPO_PROD (
 /*==============================================================*/
 create table TRANSACCION (
    NRO_TRANSAC          SERIAL not null,
-   ID_PERSONA           BIGINT               null,
+   ID_PERSONA           BIGINT               not null,
    OPERACION            CHAR(1)              not null,
-   FECHA_HORA           TIMESTAMP            null,
+   FECHA_HORA           TIMESTAMP            not null,
    SUB_TOTAL            NUMERIC(12,2)        not null,
    IVA                  NUMERIC(12,2)        not null,
    TOTAL                NUMERIC(12,2)        not null,
-   ESTADO_ACT           CHAR(1)              null,
+   ESTADO_ACT           CHAR(1)              not null,
    constraint PK_TRANSACCION primary key (NRO_TRANSAC),
    constraint CKT_TRANSACCION check (OPERACION in ('V', 'C'))
 );
@@ -275,7 +275,7 @@ create table UNIDAD (
 /*==============================================================*/
 create table USR_DSK (
    NOM_USU              TEXT                 not null,
-   PASSWD               TEXT                 null,
+   PASSWD               TEXT                 not null,
    TIPO                 CHAR(1)              not null,
    constraint PK_USR_DSK primary key (NOM_USU)
 );
