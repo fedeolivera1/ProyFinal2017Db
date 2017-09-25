@@ -1,9 +1,6 @@
 @echo off
 color 30
-rem
-rem Ejemplo de manejo de la fecha y hora actual - v2008-03-15
-rem
-rem Juego de caracteres ISO-8859-1 (Latin 1)
+
 chcp 28591 > NUL
 
 setlocal
